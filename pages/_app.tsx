@@ -1,6 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/style.css";
+import "../components/Header/header.scss";
 
+import fetch from "isomorphic-fetch";
+import es6Promise from "es6-promise";
+import cookie from "cookie"
 import Head from "next/head"
 // import "../assets/style.scss";
 import App from "next/app";
@@ -8,27 +12,44 @@ import { AppProps, AppContext } from "next/app";
 import React, { useEffect, useMemo } from "react";
 import { Header } from "../components/Header/index"
 import { Footer } from "../components/Footer";
+import { parseJwt } from "../helpers";
+import userService from "../services/userService";
+import { useGlobalState } from "../state";
+import Cookies from "js-cookie";
 
-
+es6Promise.polyfill();
 
 const MyApp = ({ Component, pageProps, router }: AppProps) => {
+	const pathname = router.pathname;
+	const [token, SetToken] = useGlobalState('token')
+	const [currentUser, SetCurrentUser] = useGlobalState('currentUser');
+	
+
+	useMemo(() => {
+		// console.log('Chạy 1 lần duy nhất tại phía Server Side');
+		// console.log("pageProps.userInfo ", pageProps.userInfo);
+				
+		//  Chạy 1 lan duy nhat khoi tao global state
+		SetToken(pageProps.token)
+		SetCurrentUser(pageProps.userInfo);
+	},[])
 
 	const hiddenHeader = useMemo(() => {
 		const exclude = ['/login', '/register'];
-		const currentRouter = router.pathname;
+		const currentRouter = pathname;
 
 		return (
 			exclude.indexOf(currentRouter) !== -1
 		)
-	}, [router])
+	}, [pathname])
 
 	const hiddenFooter = useMemo(() => {
 		const excluded = ['/', '/posts/[postId]'];
-		const currentRouter = router.pathname;
+		const currentRouter = pathname;
 		return (
 			excluded.indexOf(currentRouter) !== -1
 		)
-	}, [router]);
+	}, [pathname]);
 
 	return (
 		<div id="root">
@@ -71,12 +92,42 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 	)
 }
 
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-// 	const appProps = await App.getInitialProps(appContext)
-// 	console.log("appProps: ", appProps);
+MyApp.getInitialProps = async (appContext: AppContext) => {
+	let userRes = null;
+	let token = '';
+	const appProps = await App.getInitialProps(appContext);
 
-// 	return {...appProps}
-// }
+	// console.log("chạy o Client - Serer");
+	
+	if (typeof window === 'undefined') {
+		// Server Side Rederingg
+		// console.log('chạy ở Server Side');	
+
+		const cookieStr = appContext.ctx.req.headers.cookie || '';
+		token = cookie.parse(cookieStr).token;
+		const userToken = parseJwt(token);
+
+		// console.log('4. App Run, getInitialProps');
+		// console.log('4. Nhận được header (token)', userToken);
+
+		if (userToken && userToken.id) {
+			// Co ton ti UserID -> Call API lay thong tin UserId
+			userRes = await userService.getUserById(userToken.id)
+			// console.log('userRes ', userRes);
+			
+		}
+	}else{
+		token = Cookies.get('token') || ''
+	}
+	console.log('token ',token )
+	return {
+		pageProps: {
+			...appProps.pageProps,
+			userInfo: userRes && userRes.user,
+			token: token
+		}
+	}
+}
 
 export default MyApp;
 
