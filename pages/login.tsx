@@ -6,6 +6,8 @@ import api from '../services/api';
 import { useRouter } from 'next/router'
 import { useGlobalState } from '../state';
 import { useNotAuthen } from '../helpers/useAuthen';
+import Link from 'next/link';
+import { Button } from '../components/Button';
 
 // import Cookies from 'js-cookie'
 
@@ -22,17 +24,18 @@ const initFormLogin = {
 function Login() {
 	useNotAuthen()
 	const [formLogin, setFormLogin] = useState<FormLogin>(initFormLogin)
+	const [loading, setLoading] = useState(false)
 	const router = useRouter();
 	const errorString = router.query.error;
 	const [userInfo] = useGlobalState('currentUser');
 
 	// useEffect(() => {
 	// 	console.log('userInfo in Login Page ', userInfo);
-		
+
 	// }, [userInfo])
 
 	useEffect(() => {
-		if(errorString){
+		if (errorString) {
 			alert('Dang nhap that bai')
 			window.history.pushState({}, document.title, "/login")
 
@@ -90,9 +93,11 @@ function Login() {
 
 	const handleSubmitForm = (e) => {
 		e.preventDefault();
+		if (loading === true) return;
 		const formElement = e.target
 
 		// B1. Handle Vadidation Form 
+		setLoading(true)
 
 		// B2. Goi ham onSubmit
 		formElement.submit();
@@ -101,30 +106,30 @@ function Login() {
 	return (
 		<div className="ass1-login">
 			<div className="ass1-login__logo">
-				<a href="index.html" className="ass1-logo">ZendVn Meme</a>
+				<Link href="/" className="ass1-logo">ZendVn Meme</Link>
 			</div>
 			<div className="ass1-login__content">
 				<p>Đăng nhập</p>
 				<div className="ass1-login__form" >
 					{/* <form action="#" onSubmit={handleSubmit}> */}
 					<form action="/api/login" method="POST" onSubmit={handleSubmitForm}>
-						<input 
-						// value={formLogin.email}
-						// onChange={handleOnChangeFormLogin("email")} 
-						name="email"
-						type="text" className="form-control" 
-						placeholder="Email" required />
-						<input 
-						// value={formLogin.password} 
-						// onChange={handleOnChangeFormLogin("password")} 
-						name="password"
-						type="password" 
-						className="form-control" 
-						placeholder="Mật khẩu" required />
+						<input
+							// value={formLogin.email}
+							// onChange={handleOnChangeFormLogin("email")} 
+							name="email"
+							type="text" className="form-control"
+							placeholder="Email" required />
+						<input
+							// value={formLogin.password} 
+							// onChange={handleOnChangeFormLogin("password")} 
+							name="password"
+							type="password"
+							className="form-control"
+							placeholder="Mật khẩu" required />
 						{/* <a href="#">Copy</a> */}
 						<div className="ass1-login__send">
-							<a href="dang-ky.html">Đăng ký một tài khoản</a>
-							<button type="submit" className="ass1-btn">Đăng nhập</button>
+							<Link href="/register">Đăng ký một tài khoản</Link>
+							<Button type="submit" className="ass1-btn" isLoading={loading}>Đăng nhập</Button>
 						</div>
 					</form>
 				</div>

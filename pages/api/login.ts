@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (resHeroku.status === 200) {
       // res.statusCode = 200;
-      res.statusCode = 302;
+      res.statusCode = 302; 
       res.setHeader("Location", "/"); // Tự động redirect sáng trang Home
       res.setHeader("Content-Type", "application/json");
       res.setHeader(

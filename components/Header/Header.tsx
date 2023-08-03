@@ -1,18 +1,33 @@
 
 import Link from "next/link";
 import { useGlobalState } from "../../state";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import HeaderSearch from "./HeaderSearch";
 
 export default function Header() {
 
-	const [userInfo] = useGlobalState('currentUser');
+	const [token, setToken] = useGlobalState('token');
+	const [userInfo, setUserInfo] = useGlobalState('currentUser');
+	const router = useRouter();
+
+	const handleLogout = () => {
+		const check = window.confirm('Are you sure you want to Logout?');
+
+		if (check) {
+			Cookies.remove('token');
+			setToken('');
+			setUserInfo(null);
+			router.push('/login')
+		}
+
+	}
 
 	return (
 		<header>
 			<div className="ass1-header">
 				<div className="container">
-					<a href="index.html" className="ass1-logo">
-						ZendVn Meme
-					</a>
+					<Link href="/" className="ass1-logo">ZendVn Meme</Link>
 					<nav>
 						<ul className="ass1-header__menu">
 							<li>
@@ -89,14 +104,7 @@ export default function Header() {
 							</li>
 						</ul>
 					</nav>
-					<div className="ass1-header__search">
-						<form action="#">
-							<label>
-								<input type="search" name="search-text" className="form-control" placeholder="Nhập từ khóa ..." />
-								<i className="icon-Search" />
-							</label>
-						</form>
-					</div>
+					<HeaderSearch/>
 					<Link href="/posts/create" className="ass1-header__btn-upload ass1-btn">
 						<i className="icon-Upvote" /> Upload
 					</Link>
@@ -106,11 +114,11 @@ export default function Header() {
 							<div className="wrapper-user">
 								<a className="user-header">
 									<span className="avatar">
-										<img src={userInfo.profilepicture} alt="avatar" />
+										<img src={userInfo.profilepicture || "/images/avatar-02.png"} alt="avatar" />
 									</span>
 									<span className="email">{userInfo.email}</span>
 								</a>
-								<div className="logout">Logout</div>
+								<div onClick={handleLogout} className="logout">Logout</div>
 							</div>
 							:
 							<Link href='/login' className="ass1-header__btn-upload ass1-btn">

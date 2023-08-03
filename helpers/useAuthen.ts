@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { parseJwt } from '.';
 import { useRouter } from 'next/router';
+import { useGlobalState } from '../state';
 
 function useAuthen() {
-	const token = Cookies.get('token');
+	// const token = Cookies.get('token');
+	const [token] = useGlobalState('token')
 	const router = useRouter();
 
 	useEffect(() => {
@@ -21,7 +23,8 @@ function useAuthen() {
 // Da dang nhap -> Day qua HomePage
 
 function useNotAuthen() {
-	const token = Cookies.get('token');
+	// const token = Cookies.get('token');
+	const [token] = useGlobalState('token')
 	const router = useRouter();
 
 	useEffect(() => {

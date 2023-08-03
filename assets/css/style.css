@@ -52,6 +52,9 @@ img {
   height: auto;
   image-rendering: auto;
 }
+.mark, mark {
+  background-color: yellow;
+}
 a {
   color: #3482e2;
 }
@@ -2576,4 +2579,8 @@ select.form-control:focus {
 .ass1-aside .ass1-aside__edit-post-head .ass1-checkbox span {
   width: 20px;
   height: 20px;
+}
+
+.form-group{
+  text-align: left;
 }
