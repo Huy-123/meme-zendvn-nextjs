@@ -8,7 +8,7 @@ type PropsType = {
   userDetailPosts: PostType[];
 }
 
-const UserDetailPosts:React.FC<PropsType> = ({userDetailPosts}) => {
+const UserDetailPosts: React.FC<PropsType> = ({ userDetailPosts }) => {
   return (
     // <div className="ass1-section__wrap row ass1-section__isotope-init">
     //   {/*section*/}
@@ -106,17 +106,27 @@ const UserDetailPosts:React.FC<PropsType> = ({userDetailPosts}) => {
     //     </div>
     //   </div>
     // </div>
-    <Masonry
-				className="ass1-section__wrap row ass1-section__isotope-init"
-			>
-				{userDetailPosts.map((post) => (
-					<PostItem 
-						key={post.PID} 
-						post={post} 
-						customClass="col-lg-6"
-					/>
-				))}
-			</Masonry>
+    // <Masonry
+    // 		className="ass1-section__wrap row ass1-section__isotope-init"
+    // 	>
+    // 		{userDetailPosts.map((post) => (
+    // 			<PostItem 
+    // 				key={post.PID} 
+    // 				post={post} 
+    // 				customClass="col-lg-6"
+    // 			/>
+    // 		))}
+    // 	</Masonry>
+
+    <div className="ass1-section__wrap row ass1-section__isotope-init">
+      {userDetailPosts.map((post) => (
+        <PostItem
+          key={post.PID}
+          post={post}
+          customClass="col-lg-6"
+        />
+      ))}
+    </div>
 
   )
 }
