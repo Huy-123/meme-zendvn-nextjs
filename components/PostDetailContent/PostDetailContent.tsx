@@ -44,7 +44,7 @@ function PostDetailContent() {
 				</div>
 			</div> */}
 
-			<PostItem/>
+			{/* <PostItem/> */}
 
 			<PostCommentForm/>
 
