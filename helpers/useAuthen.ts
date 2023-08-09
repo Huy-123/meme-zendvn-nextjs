@@ -11,6 +11,7 @@ function useAuthen() {
 
 	useEffect(() => {
 		const userToken = parseJwt(token);
+		
 		if(!(userToken && userToken.id && userToken.email)){
 			// Chua dang nhap
 			router.push('/login');

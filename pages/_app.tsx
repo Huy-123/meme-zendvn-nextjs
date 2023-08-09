@@ -14,14 +14,17 @@ import { Footer } from "../components/Footer";
 import { getTokenSSRAndCSR } from "../helpers";
 import userService from "../services/userService";
 import { useGlobalState } from "../state";
+import postService from "../services/postService";
 
 es6Promise.polyfill();
 
 const MyApp = ({ Component, pageProps, router }: AppProps) => {
 	const pathname = router.pathname;
 	const [token, SetToken] = useGlobalState('token')
+	const [categories, SetCategories] = useGlobalState('categories');
 	const [currentUser, SetCurrentUser] = useGlobalState('currentUser');
 
+	// console.log("Component ", Component);
 
 	useMemo(() => {
 		// console.log('Chạy 1 lần duy nhất tại phía Server Side');
@@ -30,6 +33,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 		//  Chạy 1 lan duy nhat khoi tao global state
 		SetToken(pageProps.token)
 		SetCurrentUser(pageProps.userInfo);
+		SetCategories(pageProps.categories);
 	}, [])
 
 	const hiddenHeader = useMemo(() => {
@@ -91,15 +95,21 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
-	let userRes = null;
+	let userPos = null;
+	let categoriesPos = null;
 	// let token = '';
 	const appProps = await App.getInitialProps(appContext);
 
 	let [token, userToken] = getTokenSSRAndCSR(appContext.ctx)
 
-	if (typeof window === 'undefined' && userToken?.id && userToken?.email) {
-		userRes = await userService.getUserById(userToken.id)
+	if (typeof window === 'undefined') {
+		if(userToken?.id && userToken?.email){
+			userPos = userService.getUserById(userToken.id)
+		}
+		categoriesPos = postService.getCategories();
 	}
+
+	const [userRes, categoriesRes] = await Promise.all([userPos, categoriesPos]);
 	
 	// console.log("chạy o Client - Serer");
 	// if (typeof window === 'undefined') {
@@ -117,7 +127,8 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
 		pageProps: {
 			...appProps.pageProps,
 			token: token,
-			userInfo: userRes && userRes.user
+			userInfo: userRes?.user || null ,
+			categories: categoriesRes?.categories || [],
 		},
 	}
 }

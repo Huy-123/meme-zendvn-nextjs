@@ -7,6 +7,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { getTokenSSRAndCSR } from '../helpers';
 import { NextPageContext } from 'next';
 import postService from '../services/postService';
+import { useGlobalState } from '../state';
 
 export type PostType = {
   USERID: string,
@@ -38,7 +39,7 @@ const Home: HomeProps = ({listPosts, userPosts}) => {
     <div className="container">
       <div className="row">
         <div className="col-lg-8">
-          <PostListItem listPosts={listPosts}/>
+          <PostListItem listPosts={listPosts} />
         </div>
         <div className="col-lg-4">
           <HomeSidebar userPosts={userPosts} />
@@ -53,9 +54,10 @@ export const getServerSideProps:GetServerSideProps<HomeDataProps> = async (conte
   const ctx = context as unknown  as NextPageContext;
   const [token, userToken] = getTokenSSRAndCSR(ctx)
   const userid = userToken?.id;
-
+  console.log(typeof(userid));
+  
   const listPostsPos = postService.getPostsPaging();
-  const userPostsPos = postService.getPostsByUserId({userid, token})
+  const userPostsPos = postService.getPostsByUserId({userid, token});
 
   // Đợi 2 Promise cùng 1 lúc
   const [listPostsRes, userPostsRes] = await Promise.all([listPostsPos, userPostsPos]);

@@ -2,7 +2,7 @@ import React from "react";
 import { createGlobalState } from "react-hooks-global-state";
 
 
-type TypeCurrentuser = {
+export type TypeUser = {
 	USERID: string;
 	email: string;
 	gender: string;
@@ -14,14 +14,21 @@ type TypeCurrentuser = {
 
 }
 
+type TypeCategory = {
+	id: number;
+	text: string;
+}
+
 type TypeInitState = {
 	token: string;
-	currentUser: TypeCurrentuser | null;
+	categories: TypeCategory[];
+	currentUser: TypeUser | null;
 }
 
 const initialState: TypeInitState = 
 {
 	token: '', 
+	categories: [],
 	currentUser: null
  };
 

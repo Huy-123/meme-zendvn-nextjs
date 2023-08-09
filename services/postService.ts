@@ -1,7 +1,14 @@
 import api from "./api";
 
 const postService = {
-  getPostsPaging: async ({ pagesize = 3, currPage = 1, tagIndex = 7 } = {}) => {
+  getPostsPaging: async ({ pagesize = 3, currPage = 1 } = {}) => {
+    const url = `/post/getListPagination.php?pagesize=${pagesize}&currPage=${currPage}`;
+    return api.callJson(url);
+  },
+  getPostsPagingByCategory: async ({ pagesize = 10, currPage = 1, tagIndex = '' } = {}) => {
+    if(!tagIndex){
+      return null
+    }
     const url = `/post/getListByCategory.php?pagesize=${pagesize}&currPage=${currPage}&tagIndex=${tagIndex}`;
     return api.callJson(url);
   },
@@ -17,6 +24,9 @@ const postService = {
   },
   getPostSearch: async ({query}) => {
     return api.callJson(`/post/search.php?query=${encodeURI(query)}`)
+  },
+  getCategories: async () => {
+    return api.callJson('/categories/index.php')
   }
 };
 
