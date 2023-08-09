@@ -7,7 +7,7 @@ import postService from '../services/postService';
 import Masonry from 'react-masonry-component';
 
 type PropsType = {
-	listPosts: PostType[]
+	listPosts: PostType[];
 }
 
 const SearchPage: NextPage<PropsType> = ({ listPosts }) => {
