@@ -24,7 +24,7 @@ const SearchPage: NextPage<PropsType> = ({ listPosts }) => {
 
 	const findText = useMemo(() => {
 		const findObj = categories.find((o) => o.id === Number(categoriesId));
-		return findObj.text
+		return findObj?.text
 	}, [categoriesId]);
 
 	console.log("findText ", findText);

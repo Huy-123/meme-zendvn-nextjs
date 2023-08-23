@@ -9,6 +9,7 @@
     "start": "next start -p $PORT"
   },
   "dependencies": {
+    "@types/nprogress": "^0.2.0",
     "@zeit/next-sass": "^1.0.1",
     "atob": "^2.1.2",
     "bootstrap": "4.0.0",
@@ -19,7 +20,9 @@
     "js-cookie": "^3.0.5",
     "next": "^13.4.8",
     "next-images": "^1.8.5",
+    "next-seo": "^6.1.0",
     "node-sass": "^9.0.0",
+    "nprogress": "^0.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hooks-global-state": "^2.1.0",

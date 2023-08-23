@@ -197,6 +197,9 @@ select.form-control:focus {
 .ass1-btn:hover i {
   color: #3482e2;
 }
+.ass1-btn:hover svg circle {
+  stroke: #3482e2;
+}
 .ass1-btn-icon {
   align-items: center;
   display: -moz-inline-box;
@@ -2592,4 +2595,36 @@ select.form-control:focus {
 
 .form-group{
   text-align: left;
+}
+
+.list-categories ul li a{
+  color: #333;
+  background-color: #fff;
+  display: block;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 3px 10px;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+.list-categories ul{
+  display: flex;
+}
+.list-categories ul li {
+  margin-right: 9px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.list-categories ul li a:hover{
+  color: #fff;
+  background-color: #333;
+  display: block;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 3px 10px;
+  transition: all 0.3s ease;
+  width: fit-content;
 }

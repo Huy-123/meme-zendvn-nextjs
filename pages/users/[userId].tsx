@@ -31,7 +31,7 @@ const UserDetail:NextPage<PropsType> = ({userDetailInfo, userDetailPosts}) => {
 
 		<UserDetailInfo userDetailInfo = {userDetailInfo} postCount = {userDetailPosts.length}/>
 
-		<UserDetailPosts userDetailPosts = {userDetailPosts}/>
+		<UserDetailPosts  userDetailInfo = {userDetailInfo} userDetailPosts = {userDetailPosts}/>
 		
 	</div>
   )

@@ -16,9 +16,9 @@ export type PostType = {
   url_image: string,
   PID: string,
   post_content: string,
-  time_added: string,
+  time_added?: string,
   status: string,
-  count: string | null,
+  count?: string | null,
 }
 
 type HomeDataProps = {

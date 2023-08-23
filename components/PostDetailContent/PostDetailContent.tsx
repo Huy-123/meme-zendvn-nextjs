@@ -1,9 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PostCommentForm } from '../PostCommentForm'
 import { PostCommentList } from '../PostCommentList'
 import { PostItem } from '../PostItem'
+import { PostType } from '../../pages'
+import { TypeCategory, TypeComment } from '../../pages/posts/[postId]'
+import Link from 'next/link'
+import postService from '../../services/postService'
+import { useRouter } from 'next/router'
+import { useGlobalState } from '../../state'
 
-function PostDetailContent() {
+type PropsType = {
+	postDetailData: PostType;
+	postCategories: TypeCategory[];
+	listComments: TypeComment[]
+}
+
+const PostDetailContent: React.FC<PropsType> = ({ postDetailData, postCategories, listComments: initListComments }) => {
+
+	const [listComments, setListComments] = useState(initListComments);
+	const postId = useRouter().query.postId as string;
+	const [token] = useGlobalState('token');
+
+	const handleSubmitForm =  async (CommentValue: string, callback:(e?:Error) => void) => {
+		
+		try{
+			const result = await postService.postComment(postId, CommentValue, token);
+			if(result.status !== 200){
+				throw Error('Dang binh luan khong thanh cong')
+			}
+			const listComments = await postService.getCommentByPostId(postId);
+			if(result.status === 200){
+				setListComments(listComments?.comments);
+				callback()
+			}
+		}
+		catch(e){
+			// Throw Error
+			callback(e)
+		}
+	}
+
 	return (
 		<div className="ass1-section__list">
 			{/* <div className="ass1-section">
@@ -44,11 +80,26 @@ function PostDetailContent() {
 				</div>
 			</div> */}
 
-			{/* <PostItem/> */}
+			<PostItem post={postDetailData} />
 
-			<PostCommentForm/>
+			<div className="list-categories">
+				<h5><strong>Danh mục: </strong></h5>
+				<ul>
+					{postCategories.map((obj) => {
+						return (
+							<li key={obj.TAG_ID}>
+								<Link href="/categories/[cateId]" as={`/categories/${obj.tag_index}`}>
+									{obj.tag_value}
+								</Link>
+							</li>
+						)
+					})}
+				</ul>
+			</div>
 
-			<PostCommentList/>
+			<PostCommentForm handleSubmitForm = {handleSubmitForm}/>
+
+			<PostCommentList listComments = {listComments}/>
 		</div>
 	)
 }

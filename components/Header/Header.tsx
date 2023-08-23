@@ -42,7 +42,7 @@ export default function Header() {
 									<span className="avatar">
 										<img src={userInfo.profilepicture || "/images/avatar-02.png"} alt="avatar" />
 									</span>
-									<span className="email">{userInfo.email}</span>
+									<span className="email">{userInfo.fullname}</span>
 								</Link>
 								<div onClick={handleLogout} className="logout">Logout</div>
 							</div>

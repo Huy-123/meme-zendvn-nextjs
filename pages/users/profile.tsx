@@ -5,6 +5,7 @@ import userService from '../../services/userService';
 function UserProfile() {
 	const [currentUser, setCurrentUser] = useGlobalState('currentUser');
 	const [token] = useGlobalState('token');
+	// console.log('token ', token);
 	const [user, setUser] = useState(currentUser);
 	const [objFile, setObjFile] = useState({ file: null, base64URL: '' })
 
@@ -36,7 +37,7 @@ function UserProfile() {
 			reader.addEventListener("load", () => {
 				// convert image file to base64 string
 				setObjFile({
-					file: file,
+					file,
 					base64URL: reader.result as string
 				})
 			}, false,);
@@ -47,7 +48,7 @@ function UserProfile() {
 
 	}
 
-	const handleSubmit = (e: any) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		const data = {
@@ -66,6 +67,8 @@ function UserProfile() {
 				}else{
 					alert(res.error)
 				}
+				console.log('res ', res);
+				
 			})
 	}
 
@@ -91,8 +94,8 @@ function UserProfile() {
 							value={user.gender}
 							onChange={handleOnChange("gender")}
 							className="form-control">
-							<option value="">Giới tính</option>
-							<option value="name">Nam</option>
+							<option >Giới tính</option>
+							<option value="nam">Nam</option>
 							<option value="nu">Nữ</option>
 						</select>
 						<input

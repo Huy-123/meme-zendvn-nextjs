@@ -1,6 +1,7 @@
 import React from 'react'
 import { TypeUser, useGlobalState } from '../../state'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type PropsType = {
   userDetailInfo: TypeUser;
@@ -35,7 +36,7 @@ const UserDetailInfo: React.FC<PropsType> = ({ userDetailInfo, postCount }) => {
                   <Link href="/users/password" className="ass1-head-user__btn-follow ass1-btn">Đổi mật khẩu</Link>
                   <Link href="/users/profile" className="ass1-head-user__btn-follow ass1-btn">Profile</Link>
                 </> :
-                <a href="#" className="ass1-head-user__btn-follow ass1-btn">Theo dõi</a>
+                <a style={{cursor: "pointer"}} className="ass1-head-user__btn-follow ass1-btn">Theo dõi</a>
             }
             {/* <a href="#" class="ass1-head-user__btn-options ass1-btn-icon"><i class="icon-Options"></i></a> */}
           </div>

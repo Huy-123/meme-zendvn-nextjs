@@ -33,15 +33,14 @@ const api = {
 	},
 	callFormData : async (url: string, {data, method = 'POST', token}: ConfigFormType) => {
 		const URL = `${BASE_URL}${url}`;
-		console.log("data ", data);
-		
 		const config = {
-			method: method,
-			header: {
+			method,
+			headers: {
 				"Authorization" : `Bearer ${token}`
 			},
 			body: data
 		}
+		
 
 		return  fetch(URL, config).then(res => res.json())
 	}

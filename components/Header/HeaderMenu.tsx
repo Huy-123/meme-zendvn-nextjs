@@ -3,7 +3,7 @@ import { useGlobalState } from '../../state';
 import Link from 'next/link';
 
 function HeaderMenu() {
-	const [categories, setCategories] = useGlobalState('categories');
+	const [categories, 	] = useGlobalState('categories');
 	// console.log('categories ', categories);
 	return (
 		<nav>
